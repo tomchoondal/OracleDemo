@@ -1,0 +1,164 @@
+﻿<Application xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Class="OracleCommunication_Demo.App"
+        xmlns:viewModel="clr-namespace:OracleCommunication_Demo"
+        xmlns:conve="clr-namespace:OracleCommunication_Demo.Converters" StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <viewModel:MainViewModel x:Key="MainVM" />
+        <!-- Resources scoped at the Application level should be defined here. -->
+        <FontFamily x:Key="DefaultFont">/OracleCommunication_Demo;component/Fonts/#Helvetica Neue</FontFamily>
+        <FontFamily x:Key="IconFont">/OracleCommunication_Demo;component/Fonts/#Segoe MDL2 Assets</FontFamily>
+        <conve:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Color x:Key="LightBlueColor">#FFDCF1FF</Color>
+        <SolidColorBrush x:Key="LightBlue" Color="{DynamicResource LightBlueColor}" />
+        <Style x:Key="FullScreenButton" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Background" Value="#00000000" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Checked">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames
+                                                    Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                    Storyboard.TargetName="path">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                        Value="{x:Static Visibility.Collapsed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames
+                                                    Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                    Storyboard.TargetName="path1">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                        Value="{x:Static Visibility.Visible}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Unchecked" />
+                                    <VisualState x:Name="Indeterminate" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Path x:Name="path" Fill="#FF309FDB"
+                                    Data="M7.5023751,9.9329996 C7.64675,9.9330006 7.7909999,9.9879999 7.901,10.098 8.122,10.319 8.122,10.676 7.901,10.897 L1.9280005,16.870001 4.8969998,16.870001 C5.2090001,16.870001 5.461,17.122999 5.461,17.434999 5.461,17.747 5.2090001,18 4.8969998,18 L0.56499958,18 C0.49100018,18 0.41800022,17.985001 0.34899998,17.955999 0.21100044,17.899 0.10099983,17.789 0.043000221,17.650999 0.015000343,17.580999 0,17.507999 0,17.434999 L0,13.104 C0,12.791 0.25199986,12.538 0.56499958,12.538 0.87699986,12.538 1.1289997,12.791 1.1289997,13.104 L1.1289997,16.072001 7.1029999,10.098 C7.2135,9.9879999 7.358,9.9330006 7.5023751,9.9329996 z M13.102,0 L17.435,0 C17.51,0 17.582,0.015 17.651,0.043000102 17.79,0.101 17.899,0.211 17.957,0.34899992 17.985,0.41800001 18,0.49200001 18,0.56500006 L18,4.8969998 C18,5.2080002 17.748,5.461 17.435,5.461 17.122,5.461 16.87,5.2080002 16.87,4.8969998 L16.87,1.928 10.898,7.902 C10.787,8.0120001 10.644,8.0670004 10.499,8.0670004 10.352,8.0670004 10.209,8.0120001 10.1,7.902 9.879,7.6810002 9.879,7.3239999 10.1,7.1030002 L16.072,1.1289999 13.102,1.1289999 C12.791,1.1289999 12.538,0.87699997 12.538,0.56500006 12.538,0.252 12.792,0 13.102,0 z"
+                                    Height="18" Stretch="Fill" Width="18" />
+                            <Path x:Name="path1" Fill="#FF309FDB"
+                                    Data="M3.1697497,9.9329996 L7.5017498,9.9329996 C7.5757496,9.9329996 7.6497498,9.9469995 7.7177498,9.9759998 7.8567498,10.033 7.9667498,10.144 8.0237497,10.281 8.0527498,10.351 8.0677497,10.424 8.0677496,10.497 L8.0677496,14.829 C8.0677497,15.141 7.8147497,15.394 7.5017498,15.394 7.1897497,15.394 6.9377499,15.141 6.9377499,14.829 L6.9377499,11.86 0.96374989,17.834 C0.74275017,18.055 0.38675022,18.055 0.16574955,17.834 -0.055250168,17.613001 -0.055250168,17.256001 0.16574955,17.035999 L6.1387498,11.063 3.1697497,11.063 C2.8587499,11.063 2.6057496,10.81 2.6057496,10.497 2.6057496,10.186 2.8587499,9.9329996 3.1697497,9.9329996 z M17.43475,0 C17.57975,0 17.72375,0.055 17.83475,0.16499996 18.054749,0.38600001 18.054749,0.74299997 17.83475,0.96399987 L11.86075,6.9380002 14.83075,6.9380002 C15.14175,6.9380002 15.39475,7.1900001 15.39475,7.5019999 15.39475,7.8150001 15.14175,8.0670004 14.83075,8.0670004 L10.49775,8.0670004 C10.42475,8.0670004 10.35075,8.052 10.28275,8.0240002 10.14375,7.9660001 10.03475,7.8559999 9.9767497,7.7179999 9.9487497,7.6490002 9.9327497,7.5749998 9.9327498,7.5019999 L9.9327498,3.171 C9.9327497,2.859 10.18575,2.6059999 10.49775,2.6059999 10.80975,2.6059999 11.06275,2.859 11.06275,3.171 L11.06275,6.1389999 17.03675,0.16499996 C17.14675,0.055 17.28975,0 17.43475,0 z"
+                                    Height="18" Stretch="Fill" Width="18" Visibility="Collapsed" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsDefaulted" Value="true" />
+                            <Trigger Property="IsMouseOver" Value="true" />
+                            <Trigger Property="IsPressed" Value="true" />
+                            <Trigger Property="IsEnabled" Value="false" />
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="HomeInnerButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0"
+                                SnapsToDevicePixels="true" Background="{TemplateBinding Background}">
+                            <ContentPresenter x:Name="Content" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsDefaulted" Value="true" />
+                            <Trigger Property="IsMouseOver" Value="true" />
+                            <Trigger Property="IsPressed" Value="true" />
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Content" Property="Opacity" Value="0.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style x:Key="PlayPauseButton" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Background" Value="#00000000" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Checked">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames
+                                                    Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                    Storyboard.TargetName="Play">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                        Value="{x:Static Visibility.Visible}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames
+                                                    Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                    Storyboard.TargetName="tooltip1">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                        Value="{x:Static Visibility.Collapsed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Unchecked" />
+                                    <VisualState x:Name="Indeterminate" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Image x:Name="tooltip1" Source="/OracleCommunication_Demo;component/Images/Pause.png"
+                                    Stretch="Uniform" Width="31" />
+                            <Image x:Name="Play" Source="/OracleCommunication_Demo;component/Images/Play.png"
+                                    Stretch="Uniform" Width="31" Visibility="Collapsed" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsDefaulted" Value="true" />
+                            <Trigger Property="IsMouseOver" Value="true" />
+                            <Trigger Property="IsPressed" Value="true" />
+                            <Trigger Property="IsEnabled" Value="false" />
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="StartButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="#FF309FDB" CornerRadius="23">
+                            <TextBlock TextWrapping="Wrap" Text="{TemplateBinding Content}" HorizontalAlignment="Center"
+                                    VerticalAlignment="Center" FontFamily="{DynamicResource DefaultFont}" FontSize="18"
+                                    Foreground="White" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ControlBorderStyle" TargetType="{x:Type Border}">
+            <Setter Property="Height" Value="46" />
+            <Setter Property="Padding" Value="12,0" />
+            <Setter Property="CornerRadius" Value="23" />
+            <Setter Property="Background" Value="{DynamicResource LightBlue}" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Opacity="0.7" Direction="312" ShadowDepth="2" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Application.Resources>
+</Application>

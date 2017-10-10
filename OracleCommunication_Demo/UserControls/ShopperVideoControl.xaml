@@ -1,0 +1,182 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:OracleCommunication_Demo.UserControls"
+        xmlns:Converters="clr-namespace:OracleCommunication_Demo.Converters"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        x:Class="OracleCommunication_Demo.UserControls.ShopperVideoControl" mc:Ignorable="d" d:DesignHeight="667"
+        d:DesignWidth="375">
+    <UserControl.Resources>
+        <Converters:VideoFallbacktoVisibilityConverter x:Key="VideoFallbacktoVisibilityConverter" />
+        
+        <Style x:Key="RecordingToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Checked">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames
+                                                    Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                    Storyboard.TargetName="image">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                        Value="{x:Static Visibility.Collapsed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames
+                                                    Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                    Storyboard.TargetName="image1">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                        Value="{x:Static Visibility.Visible}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Unchecked" />
+                                    <VisualState x:Name="Indeterminate" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Image x:Name="image" Source="/OracleCommunication_Demo;component/Images/StartRecording.png"
+                                    Stretch="None" />
+                            <Image x:Name="image1" Source="/OracleCommunication_Demo;component/Images/StopRecording.png"
+                                    Stretch="None" Visibility="Collapsed" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsDefaulted" Value="true" />
+                            <Trigger Property="IsMouseOver" Value="true" />
+                            <Trigger Property="IsPressed" Value="true" />
+                            <Trigger Property="IsEnabled" Value="false" />
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style x:Key="EditingToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid x:Name="grid" Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Checked">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames
+                                                    Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                    Storyboard.TargetName="image">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                        Value="{x:Static Visibility.Collapsed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames
+                                                    Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                    Storyboard.TargetName="image1">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                        Value="{x:Static Visibility.Visible}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Unchecked" />
+                                    <VisualState x:Name="Indeterminate" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Image x:Name="image" Source="/OracleCommunication_Demo;component/Images/EditVideo.png"
+                                    Stretch="Uniform" Height="20" />
+                            <Image x:Name="image1" Source="/OracleCommunication_Demo;component/Images/Edit_Color.png"
+                                    Stretch="Uniform" Visibility="Collapsed" Height="32"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsDefaulted" Value="true" />
+                            <Trigger Property="IsMouseOver" Value="true" />
+                            <Trigger Property="IsPressed" Value="true" />
+                            <Trigger Property="IsEnabled" Value="false" >
+                            	<Setter Property="Opacity" TargetName="grid" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Storyboard x:Key="Draw">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="path">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="UnDraw">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="path">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+    <Grid Background="{DynamicResource LightBlue}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45" />
+            <RowDefinition />
+            <RowDefinition Height="65" />
+        </Grid.RowDefinitions>
+        <Button x:Name="FullScreenButton" Width="45" Style="{DynamicResource HomeInnerButtonStyle}"
+                HorizontalAlignment="Left" Click="FullScreenButton_Click">
+            <Path x:Name="path1" Width="18" Stretch="Fill" Height="18" Fill="#FF309FDB"
+                    Data="M3.1697497,9.9329996 L7.5017498,9.9329996 C7.5757496,9.9329996 7.6497498,9.9469995 7.7177498,9.9759998 7.8567498,10.033 7.9667498,10.144 8.0237497,10.281 8.0527498,10.351 8.0677497,10.424 8.0677496,10.497 L8.0677496,14.829 C8.0677497,15.141 7.8147497,15.394 7.5017498,15.394 7.1897497,15.394 6.9377499,15.141 6.9377499,14.829 L6.9377499,11.86 0.96374989,17.834 C0.74275017,18.055 0.38675022,18.055 0.16574955,17.834 -0.055250168,17.613001 -0.055250168,17.256001 0.16574955,17.035999 L6.1387498,11.063 3.1697497,11.063 C2.8587499,11.063 2.6057496,10.81 2.6057496,10.497 2.6057496,10.186 2.8587499,9.9329996 3.1697497,9.9329996 z M17.43475,0 C17.57975,0 17.72375,0.055 17.83475,0.16499996 18.054749,0.38600001 18.054749,0.74299997 17.83475,0.96399987 L11.86075,6.9380002 14.83075,6.9380002 C15.14175,6.9380002 15.39475,7.1900001 15.39475,7.5019999 15.39475,7.8150001 15.14175,8.0670004 14.83075,8.0670004 L10.49775,8.0670004 C10.42475,8.0670004 10.35075,8.052 10.28275,8.0240002 10.14375,7.9660001 10.03475,7.8559999 9.9767497,7.7179999 9.9487497,7.6490002 9.9327497,7.5749998 9.9327498,7.5019999 L9.9327498,3.171 C9.9327497,2.859 10.18575,2.6059999 10.49775,2.6059999 10.80975,2.6059999 11.06275,2.859 11.06275,3.171 L11.06275,6.1389999 17.03675,0.16499996 C17.14675,0.055 17.28975,0 17.43475,0 z" />
+        </Button>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Text="{Binding TimerVM.CurrentTime, Source={StaticResource MainVM}}" FontSize="15"
+            	FontFamily="{StaticResource DefaultFont}" Foreground="#FF4D4D4D" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,2,7,0" />
+            <ToggleButton Style="{DynamicResource EditingToggleButtonStyle}" Width="45" x:Name="EditToggleButton" IsEnabled="{Binding IsChecked, ElementName=toggleButton}" Margin="0,0,7,0">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <ei:ControlStoryboardAction Storyboard="{StaticResource Draw}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="Unchecked">
+                        <ei:ControlStoryboardAction Storyboard="{StaticResource UnDraw}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ToggleButton>
+            <Button Style="{DynamicResource HomeInnerButtonStyle}" HorizontalAlignment="Center" Width="45"
+            	Click="CaptureScreenshotButton_Click" Margin="0,0,7,0">
+            	<Image Source="/OracleCommunication_Demo;component/Images/ScreenShotButton.png" Stretch="None" />
+            </Button>
+            <ToggleButton x:Name="toggleButton" Content="ToggleButton" HorizontalAlignment="Right" Checked="toggleButton_Checked"
+                    Unchecked="ToggleButton_Unchecked" Style="{DynamicResource RecordingToggleButtonStyle}" Width="45" />
+        </StackPanel>
+        <Grid Grid.Row="1" Background="Black" Grid.RowSpan="2">
+            <Image x:Name="WebcamPlaceHolderControl"
+                    Source="/OracleCommunication_Demo;component/Images/CollaborationVideoPreview.jpg" Width="375"
+                    Stretch="Uniform" />
+            <local:WebcamPreviewControl x:Name="WebcamPreviewControl" Visibility="Collapsed" />
+            <Image Source="/OracleCommunication_Demo;component/Images/RecordingIcon.png" Stretch="None"
+                    HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,40,15,0"
+                    Visibility="{Binding IsRecordingStarted, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <Path x:Name="path"
+                    Data="M9.75,60.99C6.055,50.253 3.729,38.835 2.93,27.503 2.572,22.423 2.531,17.187 4.26,12.397 5.99,7.606 9.811,3.3 14.797,2.255 18.771,1.422 22.866,2.716 26.63,4.241 46.271,12.205 62.986,27.177 73.057,45.827 74.939,49.314 76.615,52.978 77.262,56.888 78.949,67.074 73.219,77.413 65.057,83.737 56.896,90.06 46.662,93.03 36.559,95.153 28.104,96.929 18.141,97.803 11.933,91.793 8.42,88.392 6.92,83.456 5.797,78.697 2.907,66.446 1.627,53.815 1.999,41.233"
+                    Stroke="#FFED2127" StrokeThickness="4" HorizontalAlignment="Right" VerticalAlignment="Center"
+                    Margin="0,0,75,45" Opacity="0" />
+        </Grid>
+        <Border VerticalAlignment="Center" Grid.Row="3"
+        	HorizontalAlignment="Center" CornerRadius="23" Background="{DynamicResource LightBlue}">
+            <Border.Effect>
+                <DropShadowEffect Opacity="0.7" Direction="312" ShadowDepth="2" />
+            </Border.Effect>
+            <StackPanel x:Name="SharingButtonGrid" Orientation="Horizontal" Margin="15,7">
+        		
+        		<ToggleButton Style="{DynamicResource PlayPauseButton}"  HorizontalAlignment="Left"
+        			IsChecked="{Binding IsAudioPaused, Mode=TwoWay}" />
+                <Button Style="{DynamicResource HomeInnerButtonStyle}" Margin="12,0,0,0" HorizontalAlignment="Left"
+                        Click="StopserviceButton_Click">
+                    <Image Source="/OracleCommunication_Demo;component/Images/Quit.png" Height="32" />
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,322 @@
+﻿<UserControl x:Class="OracleCommunication_Demo.UserControls.RemoteSupportControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:OracleCommunication_Demo.UserControls" mc:Ignorable="d"
+        xmlns:conve="clr-namespace:OracleCommunication_Demo.Converters"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" x:Name="remoteSupportControl"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style x:Key="HomeButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border x:Name="border" SnapsToDevicePixels="true" Background="{TemplateBinding Background}"
+                                CornerRadius="80" BorderThickness="3" BorderBrush="#FF81BB5F">
+                            <Border.Effect>
+                                <DropShadowEffect Direction="278" ShadowDepth="2" Opacity="0.7" BlurRadius="5" />
+                            </Border.Effect>
+                            <ContentPresenter Content="{TemplateBinding Content}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsDefaulted" Value="true" />
+                            <Trigger Property="IsMouseOver" Value="true" />
+                            <Trigger Property="IsPressed" Value="true" />
+                            <Trigger Property="IsEnabled" Value="false" />
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="White" />
+        </Style>
+        <Style x:Key="HomeChatButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border x:Name="border" SnapsToDevicePixels="true" Background="{TemplateBinding Background}">
+                            <ContentPresenter Content="{TemplateBinding Content}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsDefaulted" Value="true" />
+                            <Trigger Property="IsMouseOver" Value="true" />
+                            <Trigger Property="IsPressed" Value="true" />
+                            <Trigger Property="IsEnabled" Value="false" />
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="White" />
+        </Style>
+        <Style x:Key="MuteUnMuteButton" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Background" Value="#00000000" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Checked">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames
+                                                    Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                    Storyboard.TargetName="Play">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                        Value="{x:Static Visibility.Visible}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames
+                                                    Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                    Storyboard.TargetName="tooltip1">
+                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                        Value="{x:Static Visibility.Collapsed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Unchecked" />
+                                    <VisualState x:Name="Indeterminate" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Image x:Name="tooltip1" Source="/OracleCommunication_Demo;component/Images/MuteAudio.png"
+                                    Stretch="Uniform" Width="31" />
+                            <Image x:Name="Play" Source="/OracleCommunication_Demo;component/Images/LoudAudio.png"
+                                    Stretch="Uniform" Width="31" Visibility="Collapsed" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsDefaulted" Value="true" />
+                            <Trigger Property="IsMouseOver" Value="true" />
+                            <Trigger Property="IsPressed" Value="true" />
+                            <Trigger Property="IsEnabled" Value="false" />
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Storyboard x:Key="CheckedState">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                    Storyboard.TargetName="Sidepart">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                    Storyboard.TargetName="TopPart">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                    Storyboard.TargetName="TopPart">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames
+                    Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)"
+                    Storyboard.TargetName="TopPart">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-95" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                    Storyboard.TargetName="Sidepart">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames
+                    Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
+                    Storyboard.TargetName="Sidepart">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-52" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="UncheckedState">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                    Storyboard.TargetName="Sidepart">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Visible}" />
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Collapsed}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                    Storyboard.TargetName="Sidepart">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames
+                    Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)"
+                    Storyboard.TargetName="Sidepart">
+                <EasingDoubleKeyFrame KeyTime="0" Value="-52" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames
+                    Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)"
+                    Storyboard.TargetName="TopPart">
+                <EasingDoubleKeyFrame KeyTime="0" Value="-95" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                    Storyboard.TargetName="TopPart">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Visible}" />
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Collapsed}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)"
+                    Storyboard.TargetName="TopPart">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
+        <Border x:Name="Sidepart" VerticalAlignment="Bottom" HorizontalAlignment="Right" MinWidth="80"
+                RenderTransformOrigin="0.5,0.5" Visibility="Collapsed" Opacity="0" Margin="0,0,0,15"
+                Style="{DynamicResource ControlBorderStyle}">
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform X="0" />
+                </TransformGroup>
+            </Border.RenderTransform>
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal" Margin="0,0,12,0">
+                <ToggleButton HorizontalAlignment="Left" x:Name="PlayPauseToggleButton"
+                        Style="{DynamicResource PlayPauseButton}" Margin="0,0,12,0"
+                        IsChecked="{Binding RemoteSupportVM.IsAudioPaused,Source={StaticResource MainVM}}" />
+                <ToggleButton HorizontalAlignment="Left" Style="{DynamicResource MuteUnMuteButton}" Margin="0,0,12,0"
+                        IsChecked="{Binding RemoteSupportVM.HasLoudSpeaker}" Checked="ToggleButton_Checked"
+                        Visibility="{Binding RemoteSupportVM.IsAudioConnected, ConverterParameter=Inverse, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Button HorizontalAlignment="Left" Style="{DynamicResource HomeInnerButtonStyle}" Margin="0,0,12,0"
+                        Click="Button_Click">
+                    <Image Source="/OracleCommunication_Demo;component/Images/Quit.png" Height="32" />
+                </Button>
+            </StackPanel>
+        </Border>
+        <Border x:Name="TopPart" HorizontalAlignment="Right" CornerRadius="8" Background="{DynamicResource LightBlue}"
+                RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" Visibility="Collapsed" Opacity="0">
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform />
+                </TransformGroup>
+            </Border.RenderTransform>
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" Opacity="0.7" BlurRadius="7" />
+            </Border.Effect>
+            <Grid>
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,5"
+                            Orientation="Horizontal">
+                        <TextBlock Text="Lauren" FontSize="10.667" FontFamily="{DynamicResource DefaultFont}"
+                                FontWeight="Light" VerticalAlignment="Bottom" />
+                    </StackPanel>
+                    <Rectangle Fill="#FFCCCCCC" VerticalAlignment="Bottom" Height="1" StrokeThickness="0" />
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" Margin="0,5">
+                        <Image Source="/OracleCommunication_Demo;component/Images/Rec.png" Width="11" Height="11" />
+                        <TextBlock TextWrapping="Wrap" Text="Rec" FontSize="10"
+                                FontFamily="{DynamicResource DefaultFont}" Foreground="#FF4D4D4D" FontWeight="Light"
+                                Margin="5,0,0,0" />
+                    </StackPanel>
+                    <Grid Grid.Row="2">
+                        <Rectangle Fill="#FFCCCCCC" VerticalAlignment="Top" Height="1" StrokeThickness="0" />
+                        <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                            <Image Source="/OracleCommunication_Demo;component/Images/AudioSymbol.png" Height="11"
+                                    Stretch="Uniform" />
+                            <TextBlock Text="{Binding TimerVM.CurrentTime,Source={StaticResource MainVM}}"
+                                    FontFamily="{DynamicResource DefaultFont}" FontSize="18" FontWeight="Light"
+                                    Margin="5,0,0,0" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <Border x:Name="VideoPreviewGrid" CornerRadius="8" Height="300" Width="194"
+                        Visibility="{Binding RemoteSupportVM.IsVideoMinimized,Source={StaticResource MainVM},Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Background="{DynamicResource LightBlue}">
+                    <Grid Margin="0,0,0,12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="28" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="28" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="28" />
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="FullScreenToggleButton" Style="{DynamicResource HomeInnerButtonStyle}"
+                                    Click="FullScreenToggleButton_Click">
+                                <Path Fill="#FF309FDB"
+                                        Data="M7.5023751,9.9329996 C7.64675,9.9330006 7.7909999,9.9879999 7.901,10.098 8.122,10.319 8.122,10.676 7.901,10.897 L1.9280005,16.870001 4.8969998,16.870001 C5.2090001,16.870001 5.461,17.122999 5.461,17.434999 5.461,17.747 5.2090001,18 4.8969998,18 L0.56499958,18 C0.49100018,18 0.41800022,17.985001 0.34899998,17.955999 0.21100044,17.899 0.10099983,17.789 0.043000221,17.650999 0.015000343,17.580999 0,17.507999 0,17.434999 L0,13.104 C0,12.791 0.25199986,12.538 0.56499958,12.538 0.87699986,12.538 1.1289997,12.791 1.1289997,13.104 L1.1289997,16.072001 7.1029999,10.098 C7.2135,9.9879999 7.358,9.9330006 7.5023751,9.9329996 z M13.102,0 L17.435,0 C17.51,0 17.582,0.015 17.651,0.043000102 17.79,0.101 17.899,0.211 17.957,0.34899992 17.985,0.41800001 18,0.49200001 18,0.56500006 L18,4.8969998 C18,5.2080002 17.748,5.461 17.435,5.461 17.122,5.461 16.87,5.2080002 16.87,4.8969998 L16.87,1.928 10.898,7.902 C10.787,8.0120001 10.644,8.0670004 10.499,8.0670004 10.352,8.0670004 10.209,8.0120001 10.1,7.902 9.879,7.6810002 9.879,7.3239999 10.1,7.1030002 L16.072,1.1289999 13.102,1.1289999 C12.791,1.1289999 12.538,0.87699997 12.538,0.56500006 12.538,0.252 12.792,0 13.102,0 z"
+                                        Height="18" Stretch="Fill" Width="18" />
+                            </Button>
+                            <TextBlock Text="{Binding TimerVM.CurrentTime, Source={StaticResource MainVM}}"
+                                    FontSize="14" FontFamily="{StaticResource DefaultFont}" Foreground="#CC000000"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2"
+                                    Margin="0,-3,10,0" FontWeight="Light" />
+                            <StackPanel Orientation="Horizontal" Grid.Column="3"
+                                    Visibility="{Binding RemoteSupportVM.IsSharingAllowed,Source={StaticResource MainVM},Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Image Source="/OracleCommunication_Demo;component/Images/Rec.png" Width="11"
+                                        Height="11" />
+                                <TextBlock TextWrapping="Wrap" Text="Rec" FontSize="10"
+                                        FontFamily="{DynamicResource DefaultFont}" Foreground="#FF4D4D4D"
+                                        FontWeight="Light" Margin="5,-2,10,0" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <Image Source="/OracleCommunication_Demo;component/Images/Videoswitch.png" Height="20"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="4" Margin="4" />
+                        </Grid>
+                        <local:WebcamPreviewControl Grid.Row="1" />
+                        <Path x:Name="path"
+                                Data="F1M36.762,0.078C28.892,-1.007 23.303,9.475 18.974,14.577 12.38,22.35 5.654,30.062 2.05,39.748 -4.695,57.874 12.307,73.978 29.877,73.804 47.454,73.63 57.075,54.441 50.575,39.4 47.193,31.573 39.347,26.256 32.182,22.266 22.646,16.955 12.211,12.979 1.842,9.652 -0.006,9.059 -0.791,11.956 1.044,12.545 14.902,16.992 30.2,22.411 41.316,32.161 54.543,43.761 51.652,64.976 34.023,70.169 25.822,72.584 16.745,68.649 10.56,63.36 3.682,57.477 2.324,48.864 4.942,40.546 7.448,32.586 13.4,25.77 18.69,19.534 21.096,16.698 23.502,13.862 25.908,11.026 28.249,8.266 31.777,2.393 35.965,2.971 37.856,3.231 38.672,0.341 36.762,0.078"
+                                Fill="#FFF37A6F" Width="30" Grid.Row="1" RenderTransformOrigin="0.5,0.5"
+                                Visibility="{Binding RemoteSupportVM.IsDrawAllowed, Converter={StaticResource BooleanToVisibilityConverter}, Source={StaticResource MainVM}}"
+                                HorizontalAlignment="Right" Stretch="Fill" VerticalAlignment="Center" Height="42.002"
+                                Margin="0,-17,5,0">
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+        <ToggleButton Style="{DynamicResource HomeButtonStyle}" Width="80" Height="80"
+                IsChecked="{Binding ElementName=remoteSupportControl,Path=IsOpened,Mode=TwoWay}"
+                VerticalAlignment="Bottom" HorizontalAlignment="Right">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Checked">
+                    <ei:ControlStoryboardAction Storyboard="{StaticResource CheckedState}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="Unchecked">
+                    <ei:ControlStoryboardAction Storyboard="{StaticResource UncheckedState}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <Image Source="/OracleCommunication_Demo;component/Images/Home_User.png" Stretch="Uniform" />
+        </ToggleButton>
+        <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,22,12" IsHitTestVisible="False">
+            <Image x:Name="AudioActiveImage" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Source="/OracleCommunication_Demo;component/Images/Audio_Active.png" Height="18"
+                    Visibility="{Binding RemoteSupportVM.IsAudioPaused,Source={StaticResource MainVM},Converter={StaticResource BooleanToVisibilityConverter},ConverterParameter=Inverse}" />
+            <Image x:Name="AudioDeactivateImage" Source="/OracleCommunication_Demo;component/Images/Audio_Deactive.png"
+                    Height="18"
+                    Visibility="{Binding RemoteSupportVM.IsAudioPaused,Source={StaticResource MainVM},Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </Grid>
+    </Grid>
+</UserControl>
